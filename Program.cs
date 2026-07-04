@@ -9,11 +9,12 @@ class Program
         Raylib.InitWindow(800, 600, "Bowed Adventure");
         Raylib.SetTargetFPS(60);
 
-        Screen currentScreen = new MainScreen();
+        Screen currentScreen = new NoteScreen();
         
         while (!Raylib.WindowShouldClose())
         {
-            currentScreen.Update();
+            float dt = Raylib.GetFrameTime();
+            currentScreen.Update(dt);
 
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.RayWhite);

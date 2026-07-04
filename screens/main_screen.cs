@@ -2,7 +2,7 @@ using Raylib_cs;
 
 class MainScreen : Screen
 {
-    public override void Update()
+    public override void Update(float dt)
     {
         if (Raylib.IsKeyPressed(KeyboardKey.Enter))
         {

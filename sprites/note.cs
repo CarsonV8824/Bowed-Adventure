@@ -9,8 +9,4 @@ public class Note: Sprite
         _texture = texture;
     }
 
-    public void Update()
-    {
-        return;
-    }
 }

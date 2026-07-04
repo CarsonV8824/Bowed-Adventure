@@ -20,3 +20,4 @@ C:\projects\Bowed-Adventure\obj\Debug\net10.0\refint\Bowed-Adventure.dll
 C:\projects\Bowed-Adventure\obj\Debug\net10.0\Bowed-Adventure.pdb
 C:\projects\Bowed-Adventure\obj\Debug\net10.0\Bowed-Adventure.genruntimeconfig.cache
 C:\projects\Bowed-Adventure\obj\Debug\net10.0\ref\Bowed-Adventure.dll
+C:\projects\Bowed-Adventure\obj\Debug\net10.0\Bowed-Adventure.sourcelink.json
