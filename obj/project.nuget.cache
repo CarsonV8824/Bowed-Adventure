@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "YSo9iKmJ0rU=",
+  "success": true,
+  "projectFilePath": "C:\\projects\\Bowed-Adventure\\Bowed-Adventure.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\cvann\\.nuget\\packages\\raylib-cs\\8.0.0\\raylib-cs.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

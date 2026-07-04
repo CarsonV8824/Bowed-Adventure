@@ -1,0 +1,17 @@
+{
+    "piece": {
+        "tempo": 90,
+        "time": "4/4",
+        "title": "hot cross buns",
+        "composer": "traditional"
+    },
+    "notes": [
+        {
+            "note": "f#",
+            "finger": 3,
+            "pos": 1,
+            "string": "d",
+            "length": "quarter"
+        }
+    ]
+}
