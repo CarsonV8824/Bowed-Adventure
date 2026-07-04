@@ -1,5 +1,6 @@
 using Raylib_cs;
 using System.Text.Json;
+using System.Numerics;
 
 class NoteScreen : Screen
 {
@@ -15,6 +16,10 @@ class NoteScreen : Screen
     private int _noteIndex;
     private float _lengthOfNote;
 
+    private List<Note> _noteList;
+
+    private bool _SpawnNote;
+
 
     public NoteScreen()
     {
@@ -23,37 +28,78 @@ class NoteScreen : Screen
         _tempo = _jsonNotes.Piece.Tempo;
         _inverval = 60 / _tempo;
         _noteIndex = 0;
+        _noteList = new List<Note>();
+        _SpawnNote = true;
+
     }
+
+    private void AddNote(Vector2 noteVector, Texture2D noteTexture)
+    {
+        _noteList.Add(new Note(noteVector, noteTexture));
+    }
+
     public override void Update(float dt)
     {
         _spawnTimer += dt;
-        string typeOfNote = _jsonNotes.Notes[_noteIndex].Length;
-        
-        switch (typeOfNote.ToLower())
+
+        if (_SpawnNote)
         {
-            case "quarter":
-                _lengthOfNote = _inverval;
-                break;
-            case "eigth":
-                _lengthOfNote = _inverval / 2;
-                break;
-            default:
-                throw new Exception("JSON length of note could not be found in case in note_screen.cs in Update");
+            string typeOfNote = _jsonNotes.Notes[_noteIndex].Length;
+
+
+            switch (typeOfNote.ToLower())
+            {
+                case "quarter":
+                    _lengthOfNote = _inverval;
+                    break;
+                case "eigth":
+                    _lengthOfNote = _inverval / 2;
+                    break;
+                default:
+                    throw new Exception("JSON length of note could not be found in case in note_screen.cs in Update");
+            }
         }
 
-        if (_spawnTimer >= _lengthOfNote)
+        if (_SpawnNote)
+        {
+            if (_jsonNotes.Notes[_noteIndex].Note != "rest")
+            {
+            Vector2 noteVector = new Vector2(100, 100);
+            Texture2D noteTexture = Raylib.LoadTexture("assets/nene.png");
+            AddNote(noteVector, noteTexture);
+            }
+            _SpawnNote = false;
+        }
+
+        if (_spawnTimer >= _lengthOfNote && _lengthOfNote != 0)
         {
             _noteIndex++;
-            _spawnTimer = 0;
-            if (_noteIndex >= _jsonNotes.Notes.Count) 
+            if (_noteIndex >= _jsonNotes.Notes.Count)
             {
-                _noteIndex = 0;
+                _SpawnNote = false;
             }
+            else
+            {
+                _SpawnNote = true;
+                _lengthOfNote = 0;
+            }
+
+            _spawnTimer = 0;
+
+        }
+
+        foreach (Note note in _noteList)
+        {
+            float ySpeed = 100 * dt;
+            note.Update(vel_y: ySpeed);
         }
     }
 
     public override void Draw()
     {
-        return;
+        foreach (Note note in _noteList)
+        {
+            note.Draw();
+        }
     }
 }

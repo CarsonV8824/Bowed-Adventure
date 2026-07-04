@@ -11,7 +11,7 @@ public abstract class Sprite
         Raylib.DrawTextureV(_texture, _posistion, Color.White);
     }
 
-    public virtual void Update(int vel_x, int vel_y)
+    public virtual void Update(float vel_x=0, float vel_y=0)
     {
         _posistion.X += vel_x;
         _posistion.Y += vel_y;
