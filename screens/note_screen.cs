@@ -38,10 +38,8 @@ class NoteScreen : Screen
         _noteList.Add(new Note(noteVector, noteTexture));
     }
 
-    public override void Update(float dt)
+    private void PrepareNotes()
     {
-        _spawnTimer += dt;
-
         if (_SpawnNote)
         {
             string typeOfNote = _jsonNotes.Notes[_noteIndex].Length;
@@ -64,9 +62,9 @@ class NoteScreen : Screen
         {
             if (_jsonNotes.Notes[_noteIndex].Note != "rest")
             {
-            Vector2 noteVector = new Vector2(100, 100);
-            Texture2D noteTexture = Raylib.LoadTexture("assets/nene.png");
-            AddNote(noteVector, noteTexture);
+                Vector2 noteVector = new Vector2(100, 100);
+                Texture2D noteTexture = Raylib.LoadTexture("assets/nene.png");
+                AddNote(noteVector, noteTexture);
             }
             _SpawnNote = false;
         }
@@ -87,6 +85,13 @@ class NoteScreen : Screen
             _spawnTimer = 0;
 
         }
+    }
+
+    public override void Update(float dt)
+    {
+        _spawnTimer += dt;
+
+        PrepareNotes();
 
         foreach (Note note in _noteList)
         {
