@@ -67,6 +67,12 @@ public abstract class Widget
         if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), Bounds) && !IsLabel)
             color = Color.Gray;
 
+        if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), Bounds) && !IsLabel && Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), Bounds) &&
+            Raylib.IsMouseButtonPressed(MouseButton.Left))
+        {
+            color = Color.Black;
+        }
+
         Raylib.DrawRectangleRounded(Bounds, Roundness, Segments, color);
 
         Raylib.DrawRectangleRoundedLinesEx(
@@ -90,4 +96,6 @@ public abstract class Widget
             );
         }
     }
+
+    public abstract void Update(float dt);
 }

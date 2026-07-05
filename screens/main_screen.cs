@@ -4,24 +4,35 @@ class MainScreen : Screen
 {
     private Label _MainLabel;
 
+    private Button _PlayButton;
+
+    private VBoxLayout _MainScreenLayout;
+
     public MainScreen()
     {
-        const string text = "Welcome to Bowed Adventure";
 
-        int x = Raylib.GetScreenWidth() / 2;
-        int y = Raylib.GetScreenHeight() / 2;
-        _MainLabel = new Label(x, y, text:text);
+        _MainScreenLayout = new VBoxLayout();
+
+        const string mainText = "Welcome to Bowed Adventure";
+
+        _MainLabel = new Label(text:mainText);
+
+        _MainScreenLayout.AddWidget(_MainLabel);
+
+        const string playText = "Play";
+
+        _PlayButton = new Button(text:playText);
+
+        _MainScreenLayout.AddWidget(_PlayButton);
+
     }
     public override void Update(float dt)
     {
-        if (Raylib.IsKeyPressed(KeyboardKey.Enter))
-        {
-            return;
-        }
+        _MainScreenLayout.Update(dt);
     }
 
     public override void Draw()
     {
-        _MainLabel.Draw();
+        _MainScreenLayout.Draw();
     }
 }

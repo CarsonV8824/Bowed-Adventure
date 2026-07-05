@@ -1,6 +1,6 @@
 using Raylib_cs;
 
-class VBoxLayout
+class HBoxLayout
 {
     private int _width;
     private int _height;
@@ -11,7 +11,7 @@ class VBoxLayout
 
     private List<Widget> _Widgets;
     
-    public VBoxLayout()
+    public HBoxLayout()
     {
         _Widgets = new List<Widget>();
     }
@@ -27,16 +27,16 @@ class VBoxLayout
             return;
         }
 
-        float rowHeight = _screenHeight / (widgetCount + 1f);
+        float rowWidth = _screenWidth / (widgetCount + 1f);
 
         for (int i = 0; i < widgetCount; i++)
         {
             Widget wid = _Widgets[i];
             Rectangle tempRect = wid.Bounds;
-            float centerY = rowHeight * (i + 1);
+            float centerX = rowWidth * (i + 1);
 
-            tempRect.X = _screenWidth / 2f - tempRect.Width / 2f;
-            tempRect.Y = centerY - tempRect.Height / 2f;
+            tempRect.Y = _screenHeight / 2f - tempRect.Height / 2f;
+            tempRect.X = centerX - tempRect.Width / 2f;
             wid.Bounds = tempRect;
         }
     }
