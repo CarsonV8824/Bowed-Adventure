@@ -23,9 +23,17 @@ class MainScreen : Screen
 
         _PlayButton = new Button(text:playText);
 
+        _PlayButton.Clicked = test;
+
         _MainScreenLayout.AddWidget(_PlayButton);
 
     }
+
+    private static void test()
+    {
+        Console.WriteLine("works");
+    }
+
     public override void Update(float dt)
     {
         _MainScreenLayout.Update(dt);

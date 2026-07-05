@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Bowed-Adventure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4bab100aeefc0465bee756333cf4a1032c8e9302")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a252fb6742cfe53a36ab3e5222bc5f13ec1d6830")]
 [assembly: System.Reflection.AssemblyProductAttribute("Bowed-Adventure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Bowed-Adventure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
