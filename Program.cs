@@ -9,7 +9,7 @@ class Program
         Raylib.InitWindow(800, 600, "Bowed Adventure");
         Raylib.SetTargetFPS(60);
 
-        Screen currentScreen = new NoteScreen();
+        Screen currentScreen = new MainScreen();
         
         while (!Raylib.WindowShouldClose())
         {

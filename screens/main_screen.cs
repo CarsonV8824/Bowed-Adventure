@@ -2,6 +2,16 @@ using Raylib_cs;
 
 class MainScreen : Screen
 {
+    private Label _MainLabel;
+
+    public MainScreen()
+    {
+        const string text = "Welcome to Bowed Adventure";
+
+        int x = Raylib.GetScreenWidth() / 2;
+        int y = Raylib.GetScreenHeight() / 2;
+        _MainLabel = new Label(x, y, text:text);
+    }
     public override void Update(float dt)
     {
         if (Raylib.IsKeyPressed(KeyboardKey.Enter))
@@ -12,20 +22,6 @@ class MainScreen : Screen
 
     public override void Draw()
     {
-        const string text = "Welcome to Bowed Adventure";
-        const int BaseWidth = 1280;
-        const int BaseFontSize = 32;
-
-        float scale = (float)Raylib.GetScreenWidth() / BaseWidth;
-        int fontSize = (int)(BaseFontSize * scale);
-
-        fontSize = Math.Max(fontSize, 12);
-
-        int textWidth = Raylib.MeasureText(text, fontSize);
-
-        int x = (Raylib.GetScreenWidth() - textWidth) / 2;
-        int y = Raylib.GetScreenHeight() / 2;
-
-        Raylib.DrawText(text, x, y, fontSize, Color.Black);
+        _MainLabel.Draw();
     }
 }

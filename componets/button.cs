@@ -3,14 +3,9 @@ using Raylib_cs;
 class Button : Widget
 {
     public Action? Clicked {get; set; }
-    public Button(int x, int y, int width=200, int height=100)
+    public Button(int x, int y, int width=200, int height=100, string? text="")
     {
-        Rectangle tempRect;
-        tempRect.X = x;
-        tempRect.Y = y;
-        tempRect.Width = width;
-        tempRect.Height = height;
-        Bounds = tempRect;
+        ConstructorFormat(x, y, width, height, text);
     }
 
     public void Update(float dt)
