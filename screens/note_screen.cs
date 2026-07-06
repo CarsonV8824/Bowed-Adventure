@@ -18,6 +18,8 @@ class NoteScreen : Screen
 
     private List<Note> _noteList;
 
+    private List<Finger> _fingerList;
+
     private bool _SpawnNote;
 
 
@@ -29,7 +31,17 @@ class NoteScreen : Screen
         _inverval = 60 / _tempo;
         _noteIndex = 0;
         _noteList = new List<Note>();
+        _fingerList = new List<Finger>();
+        InitFingers();
         _SpawnNote = true;
+    }
+
+    private void InitFingers()
+    {
+        for (int i=1; i < 5; i++)
+        {
+            _fingerList.Add(new Finger(i));
+        }
     }
 
     public void ChangePiece(string Piece)
@@ -108,6 +120,11 @@ class NoteScreen : Screen
             float ySpeed = 100 * dt;
             note.Update(vel_y: ySpeed);
         }
+
+        foreach (Finger finger in _fingerList)
+        {
+            finger.Update();
+        }
     }
 
     public override void Draw()
@@ -131,6 +148,11 @@ class NoteScreen : Screen
             }
             index++;
             
+        }
+
+        foreach (Finger finger in _fingerList.ToList())
+        {
+            finger.Draw();
         }
     }
 }
