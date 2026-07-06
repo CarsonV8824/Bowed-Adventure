@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <BaseOutputPath>$(USERPROFILE)\AppData\Local\Bowed-Adventure\bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(USERPROFILE)\AppData\Local\Bowed-Adventure\obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+</Project>

@@ -23,7 +23,7 @@ class NoteScreen : Screen
 
     public NoteScreen()
     {
-        _json = File.ReadAllText("pieces/hot_cross_buns.json");
+        _json = File.ReadAllText("assets/pieces/hot_cross_buns.json");
         _jsonNotes = JsonSerializer.Deserialize<JsonNotes>(_json, JsonOptions) ?? throw new InvalidOperationException("Failed to load piece JSON.");
         _tempo = _jsonNotes.Piece.Tempo;
         _inverval = 60 / _tempo;
@@ -63,7 +63,7 @@ class NoteScreen : Screen
             if (_jsonNotes.Notes[_noteIndex].Note != "rest")
             {
                 Vector2 noteVector = new Vector2(100, 100);
-                Texture2D noteTexture = Raylib.LoadTexture("assets/nene.png");
+                Texture2D noteTexture = Raylib.LoadTexture("assets/images/nene.png");
                 AddNote(noteVector, noteTexture);
             }
             _SpawnNote = false;
@@ -102,9 +102,18 @@ class NoteScreen : Screen
 
     public override void Draw()
     {
-        foreach (Note note in _noteList)
+        int index = 0;
+        foreach (Note note in _noteList.ToList())
         {
             note.Draw();
+            var (x, y) = note.getCoordinates();
+            if (x > Raylib.GetScreenWidth() || y > Raylib.GetScreenHeight())
+            {
+                _noteList.RemoveAt(index);
+                Console.WriteLine("item removed");
+            }
+            index++;
+            
         }
     }
 }

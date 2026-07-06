@@ -17,5 +17,12 @@ public abstract class Sprite
         _posistion.Y += vel_y;
     }
 
+    public virtual Tuple<float, float> getCoordinates()
+    {
+        Tuple<float, float> returnTuple = Tuple.Create(_posistion.X, _posistion.Y);
+        return returnTuple;
+
+    }
+
 
 }

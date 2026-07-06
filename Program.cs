@@ -4,6 +4,7 @@ enum WindowSelected
 {
     MainMenu,
     PlayWindow,
+    MapWindow,
     PauseMenu
 }
 
@@ -29,7 +30,7 @@ class Program
                 break;
                 case WindowSelected.PlayWindow:
                     shownScreen = noteScreen;
-                    break;
+                break;
             }
             shownScreen.Update(dt);
 
