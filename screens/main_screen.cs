@@ -7,9 +7,12 @@ class MainScreen : Screen
     private Button _PlayButton;
 
     private VBoxLayout _MainScreenLayout;
+    
+    private readonly Action? _toPlayMenu;
 
-    public MainScreen()
+    public MainScreen(Action? toPlayMenu)
     {
+        _toPlayMenu = toPlayMenu;
 
         _MainScreenLayout = new VBoxLayout();
 
@@ -23,15 +26,15 @@ class MainScreen : Screen
 
         _PlayButton = new Button(text:playText);
 
-        _PlayButton.Clicked = test;
+        _PlayButton.Clicked = ToPlayWindow;
 
         _MainScreenLayout.AddWidget(_PlayButton);
 
     }
 
-    private static void test()
+    private void ToPlayWindow()
     {
-        Console.WriteLine("works");
+        _toPlayMenu?.Invoke();
     }
 
     public override void Update(float dt)
