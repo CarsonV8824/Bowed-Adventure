@@ -30,7 +30,17 @@ class NoteScreen : Screen
         _noteIndex = 0;
         _noteList = new List<Note>();
         _SpawnNote = true;
+    }
 
+    public void ChangePiece(string Piece)
+    {
+        _json = File.ReadAllText($"assets/pieces/{Piece}.json");
+        _jsonNotes = JsonSerializer.Deserialize<JsonNotes>(_json, JsonOptions) ?? throw new InvalidOperationException("Failed to load piece JSON.");
+        _tempo = _jsonNotes.Piece.Tempo;
+        _inverval = 60 / _tempo;
+        _noteIndex = 0;
+        _noteList = new List<Note>();
+        _SpawnNote = true;
     }
 
     private void AddNote(Vector2 noteVector, Texture2D noteTexture)
@@ -109,8 +119,15 @@ class NoteScreen : Screen
             var (x, y) = note.getCoordinates();
             if (x > Raylib.GetScreenWidth() || y > Raylib.GetScreenHeight())
             {
-                _noteList.RemoveAt(index);
-                Console.WriteLine("item removed");
+                try
+                {
+                    _noteList.RemoveAt(index);
+                } catch (ArgumentOutOfRangeException e)
+                {
+                    Console.WriteLine($"Index out of range at line 122 in Draw() in note_screen.cs: {e}");
+                    break;
+                }
+                
             }
             index++;
             

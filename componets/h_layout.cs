@@ -1,9 +1,8 @@
 using Raylib_cs;
 
+
 class HBoxLayout
 {
-    private int _width;
-    private int _height;
 
     private int _screenWidth;
 

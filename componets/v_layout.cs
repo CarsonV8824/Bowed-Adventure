@@ -2,8 +2,6 @@ using Raylib_cs;
 
 class VBoxLayout
 {
-    private int _width;
-    private int _height;
 
     private int _screenWidth;
 
