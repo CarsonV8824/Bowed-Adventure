@@ -7,6 +7,7 @@ class Finger : Sprite
 {
     private const float Scale = 0.1f;
     private protected readonly Texture2D _pressedtexture;
+    private protected readonly Texture2D _default_texture;
     private protected readonly int _FingerNumber;
     private readonly Dictionary<int, KeyboardKey> fingerLookup = new()
     {
@@ -20,8 +21,10 @@ class Finger : Sprite
     {
         _FingerNumber = finger_number;
         _texture = Raylib.LoadTexture("assets/images/finger.png");
+        _default_texture = Raylib.LoadTexture("assets/images/finger.png");
+        _pressedtexture = Raylib.LoadTexture("assets/images/nene.png");
         GetCoordsOfFingers(finger_number);
-        
+
     }
 
     public override void Draw()
@@ -31,9 +34,14 @@ class Finger : Sprite
 
     public override void Update(float vel_x = 0, float vel_y = 0)
     {
-        if (Raylib.IsKeyPressed(fingerLookup[_FingerNumber]))
+        if (Raylib.IsKeyDown(fingerLookup[_FingerNumber]))
         {
             Console.WriteLine($"key {fingerLookup[_FingerNumber]}");
+            GetCoordsOfFingers(_FingerNumber);
+            _texture = _pressedtexture;
+        } else {
+            GetCoordsOfFingers(_FingerNumber);
+            _texture = _default_texture;
         }
     }
 
