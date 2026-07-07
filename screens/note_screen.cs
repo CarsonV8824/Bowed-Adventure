@@ -21,6 +21,9 @@ class NoteScreen : Screen
     private List<Finger> _fingerList;
 
     private bool _SpawnNote;
+    private bool _isDown;
+    private Texture2D _DownSymbol;
+    private Texture2D _UpSymbol;
 
 
     public NoteScreen()
@@ -34,6 +37,9 @@ class NoteScreen : Screen
         _fingerList = new List<Finger>();
         InitFingers();
         _SpawnNote = true;
+        _DownSymbol = Raylib.LoadTexture("assets/images/downbow.webp");
+        _UpSymbol = Raylib.LoadTexture("assets/images/upbow.webp");
+        _isDown = true;
     }
 
     private void InitFingers()
@@ -57,7 +63,11 @@ class NoteScreen : Screen
 
     private void AddNote(Vector2 noteVector, Texture2D noteTexture)
     {
-        _noteList.Add(new Note(noteVector, noteTexture));
+        int finger = Convert.ToInt32(_jsonNotes.Notes[_noteIndex].Finger);
+        float xPos = (Raylib.GetScreenWidth() * (5 - finger) / 6f) - (noteTexture.Width / 2f);
+        noteVector.X = xPos;
+        Note note = new Note(noteVector, noteTexture);
+        _noteList.Add(note);
     }
 
     private void PrepareNotes()
@@ -65,7 +75,7 @@ class NoteScreen : Screen
         if (_SpawnNote)
         {
             string typeOfNote = _jsonNotes.Notes[_noteIndex].Length;
-
+            
 
             switch (typeOfNote.ToLower())
             {
@@ -78,6 +88,9 @@ class NoteScreen : Screen
                 default:
                     throw new Exception("JSON length of note could not be found in case in note_screen.cs in Update");
             }
+            
+ 
+            
         }
 
         if (_SpawnNote)
@@ -141,7 +154,7 @@ class NoteScreen : Screen
                     _noteList.RemoveAt(index);
                 } catch (ArgumentOutOfRangeException e)
                 {
-                    Console.WriteLine($"Index out of range at line 122 in Draw() in note_screen.cs: {e}");
+                    Console.WriteLine($"Index out of range at line 151 in Draw() in note_screen.cs: {e}");
                     break;
                 }
                 
@@ -153,6 +166,16 @@ class NoteScreen : Screen
         foreach (Finger finger in _fingerList.ToList())
         {
             finger.Draw();
+        }
+
+        if (_isDown)
+        {
+            
+            Raylib.DrawTexture(_DownSymbol, 300, 300, Color.Black);
+
+        } else
+        {
+            Raylib.DrawTexture(_UpSymbol, 300, 300, Color.Black);
         }
     }
 }

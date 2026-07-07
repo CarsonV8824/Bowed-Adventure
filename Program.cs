@@ -11,7 +11,7 @@ enum WindowSelected
 class Program
 {
     private static WindowSelected _currentScreen;
-    static void Main()
+    public static void Main(string[] args)
     {
         Raylib.InitWindow(800, 600, "Bowed Adventure");
         Raylib.SetTargetFPS(60);

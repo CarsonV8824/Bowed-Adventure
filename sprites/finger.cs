@@ -11,10 +11,10 @@ class Finger : Sprite
     private protected readonly int _FingerNumber;
     private readonly Dictionary<int, KeyboardKey> fingerLookup = new()
     {
-        [1] = KeyboardKey.H,
-        [2] = KeyboardKey.J,
-        [3] = KeyboardKey.K,
-        [4] = KeyboardKey.L
+        [1] = KeyboardKey.F,
+        [2] = KeyboardKey.D,
+        [3] = KeyboardKey.S,
+        [4] = KeyboardKey.A
     };
 
     public Finger(int finger_number)
@@ -22,7 +22,7 @@ class Finger : Sprite
         _FingerNumber = finger_number;
         _texture = Raylib.LoadTexture("assets/images/finger.png");
         _default_texture = Raylib.LoadTexture("assets/images/finger.png");
-        _pressedtexture = Raylib.LoadTexture("assets/images/nene.png");
+        _pressedtexture = Raylib.LoadTexture("assets/images/finger.png");
         GetCoordsOfFingers(finger_number);
 
     }
@@ -36,7 +36,7 @@ class Finger : Sprite
     {
         if (Raylib.IsKeyDown(fingerLookup[_FingerNumber]))
         {
-            Console.WriteLine($"key {fingerLookup[_FingerNumber]}");
+            Console.WriteLine($"key {fingerLookup[_FingerNumber]}. finger {_FingerNumber}");
             GetCoordsOfFingers(_FingerNumber);
             _texture = _pressedtexture;
         } else {
@@ -50,7 +50,7 @@ class Finger : Sprite
         float scaledWidth = _texture.Width * Scale;
         float scaledHeight = _texture.Height * Scale;
 
-        _posistion.X = (Raylib.GetScreenWidth() * finger_number / 5f) - (scaledWidth / 2f);
+        _posistion.X = (Raylib.GetScreenWidth() * finger_number / 6f) - (scaledWidth / 2f);
         _posistion.Y = Raylib.GetScreenHeight() - scaledHeight;
     }
 }
