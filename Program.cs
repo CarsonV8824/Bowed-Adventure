@@ -15,10 +15,12 @@ class Program
     {
         Raylib.InitWindow(800, 600, "Bowed Adventure");
         Raylib.SetTargetFPS(60);
+        Raylib.SetExitKey(KeyboardKey.Null);
 
         _currentScreen = WindowSelected.MainMenu;
         MainScreen mainScreen = new MainScreen(ToPlayWindow);
-        NoteScreen noteScreen = new NoteScreen();
+        NoteScreen noteScreen = new NoteScreen(ToPauseWindow);
+        PauseScreen pauseScreen = new PauseScreen(ToMainWindow, ToPlayWindow);
         Screen shownScreen = mainScreen;
         while (!Raylib.WindowShouldClose())
         {
@@ -27,10 +29,13 @@ class Program
             {
                 case WindowSelected.MainMenu:
                     shownScreen = mainScreen;
-                break;
+                    break;
                 case WindowSelected.PlayWindow:
                     shownScreen = noteScreen;
-                break;
+                    break;
+                case WindowSelected.PauseMenu:
+                    shownScreen = pauseScreen;
+                    break;
             }
             shownScreen.Update(dt);
 
@@ -52,6 +57,11 @@ class Program
     public static void ToMainWindow()
     {
         _currentScreen = WindowSelected.MainMenu;
+    }
+
+    public static void ToPauseWindow()
+    {
+        _currentScreen = WindowSelected.PauseMenu;
     }
 
 

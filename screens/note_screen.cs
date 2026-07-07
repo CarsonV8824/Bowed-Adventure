@@ -24,9 +24,10 @@ class NoteScreen : Screen
     private bool _isDown;
     private Texture2D _DownSymbol;
     private Texture2D _UpSymbol;
+    private readonly Action _toPauseMenu;
 
 
-    public NoteScreen()
+    public NoteScreen(Action pauseMenu)
     {
         _json = File.ReadAllText("assets/pieces/hot_cross_buns.json");
         _jsonNotes = JsonSerializer.Deserialize<JsonNotes>(_json, JsonOptions) ?? throw new InvalidOperationException("Failed to load piece JSON.");
@@ -37,14 +38,15 @@ class NoteScreen : Screen
         _fingerList = new List<Finger>();
         InitFingers();
         _SpawnNote = true;
-        _DownSymbol = Raylib.LoadTexture("assets/images/downbow.webp");
-        _UpSymbol = Raylib.LoadTexture("assets/images/upbow.webp");
+        _DownSymbol = Raylib.LoadTexture("assets/images/nene.png");
+        _UpSymbol = Raylib.LoadTexture("assets/images/nene.png");
         _isDown = true;
+        _toPauseMenu = pauseMenu;
     }
 
     private void InitFingers()
     {
-        for (int i=1; i < 5; i++)
+        for (int i = 1; i < 5; i++)
         {
             _fingerList.Add(new Finger(i));
         }
@@ -75,7 +77,7 @@ class NoteScreen : Screen
         if (_SpawnNote)
         {
             string typeOfNote = _jsonNotes.Notes[_noteIndex].Length;
-            
+
 
             switch (typeOfNote.ToLower())
             {
@@ -88,9 +90,9 @@ class NoteScreen : Screen
                 default:
                     throw new Exception("JSON length of note could not be found in case in note_screen.cs in Update");
             }
-            
- 
-            
+
+
+
         }
 
         if (_SpawnNote)
@@ -138,6 +140,21 @@ class NoteScreen : Screen
         {
             finger.Update();
         }
+
+        if (Raylib.IsKeyPressed(KeyboardKey.Up))
+        {
+            _isDown = false;
+            Console.WriteLine("works");
+        }
+        else if (Raylib.IsKeyPressed(KeyboardKey.Down))
+        {
+            Console.WriteLine("works");
+            _isDown = true;
+        } else if (Raylib.IsKeyPressed(KeyboardKey.Escape))
+        {
+            _toPauseMenu.Invoke();
+        }
+
     }
 
     public override void Draw()
@@ -152,15 +169,16 @@ class NoteScreen : Screen
                 try
                 {
                     _noteList.RemoveAt(index);
-                } catch (ArgumentOutOfRangeException e)
+                }
+                catch (ArgumentOutOfRangeException e)
                 {
                     Console.WriteLine($"Index out of range at line 151 in Draw() in note_screen.cs: {e}");
                     break;
                 }
-                
+
             }
             index++;
-            
+
         }
 
         foreach (Finger finger in _fingerList.ToList())
@@ -170,12 +188,16 @@ class NoteScreen : Screen
 
         if (_isDown)
         {
-            
-            Raylib.DrawTexture(_DownSymbol, 300, 300, Color.Black);
+            const int posY = 0;
+            int posX = Raylib.GetScreenWidth() - (int) _DownSymbol.Dimensions.X;
+            Raylib.DrawTexture(_DownSymbol, posX, posY, Color.Black);
 
-        } else
+        }
+        else
         {
-            Raylib.DrawTexture(_UpSymbol, 300, 300, Color.Black);
+            const int posY = 0;
+            int posX = Raylib.GetScreenWidth() - (int) _DownSymbol.Dimensions.X;
+            Raylib.DrawTexture(_UpSymbol, posX, posY, Color.Blue);
         }
     }
 }
