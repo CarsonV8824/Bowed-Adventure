@@ -30,6 +30,8 @@ the notes part of the json is as long as the piece has that many notes. Notes wi
 
 - length: str (type of note. Example: quarter, eigth, sixteenth)
 
+- isDown: bool (is it a down bow or up bow?)
+
 when doing rests, put in rest for note, then the type of rest in length
 
 ## Example

@@ -5,5 +5,6 @@ class Notes
     public uint Pos { get; set; }
     public required string PlayedString { get; set; }
     public required string Length { get; set; }
+    public bool? IsDown { get; set; }
 
 }
