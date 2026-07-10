@@ -25,6 +25,7 @@ class NoteScreen : Screen
     private Texture2D _DownSymbol;
     private Texture2D _UpSymbol;
     private readonly Action _toPauseMenu;
+    private const int NoteSpeed = 100;
 
 
     public NoteScreen(Action pauseMenu)
@@ -52,7 +53,7 @@ class NoteScreen : Screen
         }
     }
 
-    public void ChangePiece(string Piece="hot_cross_buns")
+    public void ChangePiece(string Piece = "hot_cross_buns")
     {
         _json = File.ReadAllText($"assets/pieces/{Piece}.json");
         _jsonNotes = JsonSerializer.Deserialize<JsonNotes>(_json, JsonOptions) ?? throw new InvalidOperationException("Failed to load piece JSON.");
@@ -73,7 +74,8 @@ class NoteScreen : Screen
 
     private void PrepareNotes()
     {
-        float size = _inverval * 50;
+        const float spawnBaselineY = 200f;
+        float size = _inverval * NoteSpeed;
         if (_SpawnNote)
         {
             string typeOfNote = _jsonNotes.Notes[_noteIndex].Length;
@@ -85,6 +87,7 @@ class NoteScreen : Screen
                     _lengthOfNote = _inverval;
                     break;
                 case "eigth":
+                case "eighth":
                     _lengthOfNote = _inverval / 2;
                     size /= 2;
                     break;
@@ -100,8 +103,9 @@ class NoteScreen : Screen
         {
             if (_jsonNotes.Notes[_noteIndex].Note != "rest")
             {
-
-                Rectangle noteRect = new Rectangle(100, 100, new Vector2(100, size));
+                // Keep all notes aligned by their leading edge so mixed lengths do not shift early/late.
+                float spawnTopY = spawnBaselineY - size;
+                Rectangle noteRect = new Rectangle(100, spawnTopY, new Vector2(100, size));
                 AddNote(noteRect);
             }
             _SpawnNote = false;
@@ -109,6 +113,7 @@ class NoteScreen : Screen
 
         if (_spawnTimer >= _lengthOfNote && _lengthOfNote != 0)
         {
+            float completedNoteLength = _lengthOfNote;
             _noteIndex++;
             if (_noteIndex >= _jsonNotes.Notes.Count)
             {
@@ -120,7 +125,8 @@ class NoteScreen : Screen
                 _lengthOfNote = 0;
             }
 
-            _spawnTimer = 0;
+            // Keep any extra elapsed time so timing stays consistent across note-length changes.
+            _spawnTimer -= completedNoteLength;
 
         }
     }
@@ -133,7 +139,7 @@ class NoteScreen : Screen
 
         foreach (Note note in _noteList)
         {
-            float ySpeed = 100 * dt;
+            float ySpeed = NoteSpeed * dt;
             note.Update(vel_y: ySpeed);
         }
 
@@ -151,7 +157,8 @@ class NoteScreen : Screen
         {
             Console.WriteLine("works");
             _isDown = true;
-        } else if (Raylib.IsKeyPressed(KeyboardKey.Escape))
+        }
+        else if (Raylib.IsKeyPressed(KeyboardKey.Escape))
         {
             _toPauseMenu.Invoke();
         }
@@ -190,14 +197,14 @@ class NoteScreen : Screen
         if (_isDown)
         {
             const int posY = 0;
-            int posX = Raylib.GetScreenWidth() - (int) _DownSymbol.Dimensions.X;
+            int posX = Raylib.GetScreenWidth() - (int)_DownSymbol.Dimensions.X;
             Raylib.DrawTexture(_DownSymbol, posX, posY, Color.Black);
 
         }
         else
         {
             const int posY = 0;
-            int posX = Raylib.GetScreenWidth() - (int) _DownSymbol.Dimensions.X;
+            int posX = Raylib.GetScreenWidth() - (int)_DownSymbol.Dimensions.X;
             Raylib.DrawTexture(_UpSymbol, posX, posY, Color.Blue);
         }
     }
