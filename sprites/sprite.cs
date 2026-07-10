@@ -24,5 +24,11 @@ public abstract class Sprite
 
     }
 
+    public float GetYCoord()
+    {
+        float return_y = _texture.Width / 2f;
+        return _posistion.Y + return_y;
+    }
+
 
 }

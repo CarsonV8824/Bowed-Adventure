@@ -29,4 +29,10 @@ public class Note
 
     }
 
+    public float GetYCoord()
+    {
+        float return_y = _rectangle.Width / 2f;
+        return _rectangle.Y + return_y;
+    }
+
 }

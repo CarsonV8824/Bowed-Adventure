@@ -15,13 +15,13 @@ class Finger : Sprite
         [3] = KeyboardKey.D,
         [4] = KeyboardKey.F
     };
-    public bool IsPressed {get; set;}
+    public bool IsPressed { get; set; }
 
     public Finger(int finger_number)
     {
         IsPressed = false;
         _FingerNumber = finger_number;
-        _texture = Raylib.LoadTexture("assets/images/finger.png");        
+        _texture = Raylib.LoadTexture("assets/images/finger.png");
         _pressedtexture = Raylib.LoadTexture("assets/images/pressed.png");
         GetCoordsOfFingers(finger_number);
 
@@ -35,7 +35,7 @@ class Finger : Sprite
             for (int i = 0; i < 2; i++)
             {
                 Vector2 pressedPosition = _posistion;
-                pressedPosition.Y = 500 - (i*100);
+                pressedPosition.Y = 500 - (i * 100);
                 Raylib.DrawTextureEx(_pressedtexture, pressedPosition, 0, Scale, Color.White);
             }
 
@@ -49,7 +49,9 @@ class Finger : Sprite
             GetCoordsOfFingers(_FingerNumber);
             IsPressed = true;
             _posistion.Y = 300;
-        } else {
+        }
+        else
+        {
             GetCoordsOfFingers(_FingerNumber);
             IsPressed = false;
         }
@@ -65,6 +67,12 @@ class Finger : Sprite
             _posistion.Y = Raylib.GetScreenHeight() - scaledHeight;
         }
         _posistion.X = (Raylib.GetScreenWidth() * finger_number / 6f) - (scaledWidth / 2f);
-        
+
     }
+
+    public float GetWidth()
+    {
+        return _texture.Width;
+    }
+
 }

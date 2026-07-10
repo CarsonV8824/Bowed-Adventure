@@ -148,6 +148,18 @@ class NoteScreen : Screen
             finger.Update();
         }
 
+        // collision logic
+        foreach (Note note in _noteList.ToList())
+        {
+            foreach (Finger finger in _fingerList.ToList())
+            {
+                if (Math.Abs(note.GetYCoord() - finger.GetYCoord()) <= finger.GetWidth() && finger.IsPressed)
+                {
+                    Console.WriteLine("collision of finger and note");
+                }
+            }
+        }
+
         if (Raylib.IsKeyPressed(KeyboardKey.Up))
         {
             _isDown = false;
