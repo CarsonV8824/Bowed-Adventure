@@ -32,7 +32,7 @@ class NoteScreen : Screen
         _json = File.ReadAllText("assets/pieces/hot_cross_buns.json");
         _jsonNotes = JsonSerializer.Deserialize<JsonNotes>(_json, JsonOptions) ?? throw new InvalidOperationException("Failed to load piece JSON.");
         _tempo = _jsonNotes.Piece.Tempo;
-        _inverval = 60 / _tempo;
+        _inverval = 60f / _tempo;
         _noteIndex = 0;
         _noteList = new List<Note>();
         _fingerList = new List<Finger>();
@@ -52,7 +52,7 @@ class NoteScreen : Screen
         }
     }
 
-    public void ChangePiece(string Piece)
+    public void ChangePiece(string Piece="hot_cross_buns")
     {
         _json = File.ReadAllText($"assets/pieces/{Piece}.json");
         _jsonNotes = JsonSerializer.Deserialize<JsonNotes>(_json, JsonOptions) ?? throw new InvalidOperationException("Failed to load piece JSON.");
@@ -63,17 +63,17 @@ class NoteScreen : Screen
         _SpawnNote = true;
     }
 
-    private void AddNote(Vector2 noteVector, Texture2D noteTexture)
+    private void AddNote(Rectangle noteTexture)
     {
         int finger = Convert.ToInt32(_jsonNotes.Notes[_noteIndex].Finger);
         float xPos = (Raylib.GetScreenWidth() * (5 - finger) / 6f) - (noteTexture.Width / 2f);
-        noteVector.X = xPos;
-        Note note = new Note(noteVector, noteTexture);
+        Note note = new Note(noteTexture, xPos);
         _noteList.Add(note);
     }
 
     private void PrepareNotes()
     {
+        float size = _inverval * 50;
         if (_SpawnNote)
         {
             string typeOfNote = _jsonNotes.Notes[_noteIndex].Length;
@@ -86,6 +86,7 @@ class NoteScreen : Screen
                     break;
                 case "eigth":
                     _lengthOfNote = _inverval / 2;
+                    size /= 2;
                     break;
                 default:
                     throw new Exception("JSON length of note could not be found in case in note_screen.cs in Update");
@@ -99,9 +100,9 @@ class NoteScreen : Screen
         {
             if (_jsonNotes.Notes[_noteIndex].Note != "rest")
             {
-                Vector2 noteVector = new Vector2(100, 100);
-                Texture2D noteTexture = Raylib.LoadTexture("assets/images/nene.png");
-                AddNote(noteVector, noteTexture);
+
+                Rectangle noteRect = new Rectangle(100, 100, new Vector2(100, size));
+                AddNote(noteRect);
             }
             _SpawnNote = false;
         }

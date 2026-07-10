@@ -48,140 +48,157 @@ here is an example of a sample json file
     "notes": [
         {
             "note": "f#",
-            "finger": 3,
+            "finger": 2,
             "pos": 1,
             "playedString": "d",
-            "length": "quarter"
+            "length": "quarter",
+            "isDown": true
         },
         {
             "note": "e",
-            "finger": 3,
+            "finger": 1,
             "pos": 1,
             "playedString": "d",
-            "length": "quarter"
+            "length": "quarter",
+            "isDown": false
         },
         {
             "note": "d",
-            "finger": 3,
+            "finger": 0,
             "pos": 1,
             "playedString": "d",
-            "length": "quarter"
+            "length": "quarter",
+            "isDown": true
         },
-                {
+        {
             "note": "rest",
-            "finger": 3,
+            "finger": 0,
             "pos": 1,
             "playedString": "d",
             "length": "quarter"
         },
         {
             "note": "f#",
-            "finger": 3,
+            "finger": 2,
             "pos": 1,
             "playedString": "d",
-            "length": "quarter"
+            "length": "quarter",
+            "isDown": false
         },
         {
             "note": "e",
-            "finger": 3,
+            "finger": 1,
             "pos": 1,
             "playedString": "d",
-            "length": "quarter"
+            "length": "quarter",
+            "isDown": true
         },
         {
             "note": "d",
-            "finger": 3,
+            "finger": 0,
             "pos": 1,
             "playedString": "d",
-            "length": "quarter"
+            "length": "quarter",
+            "isDown": false
         },
         {
             "note": "rest",
-            "finger": 3,
+            "finger": 0,
             "pos": 1,
             "playedString": "d",
             "length": "quarter"
         },
         {
             "note": "d",
-            "finger": 3,
+            "finger": 0,
             "pos": 1,
             "playedString": "d",
-            "length": "eigth"
+            "length": "eigth",
+            "isDown": true
         },
         {
             "note": "d",
-            "finger": 3,
+            "finger": 0,
             "pos": 1,
             "playedString": "d",
-            "length": "eigth"
+            "length": "eigth",
+            "isDown": false
         },
         {
             "note": "d",
-            "finger": 3,
+            "finger": 0,
             "pos": 1,
             "playedString": "d",
-            "length": "eigth"
+            "length": "eigth",
+            "isDown": true
         },
         {
             "note": "d",
-            "finger": 3,
+            "finger": 0,
             "pos": 1,
             "playedString": "d",
-            "length": "eigth"
-        },
-                {
-            "note": "e",
-            "finger": 3,
-            "pos": 1,
-            "playedString": "d",
-            "length": "eigth"
+            "length": "eigth",
+            "isDown": false
         },
         {
             "note": "e",
-            "finger": 3,
+            "finger": 1,
             "pos": 1,
             "playedString": "d",
-            "length": "eigth"
+            "length": "eigth",
+            "isDown": true
         },
         {
             "note": "e",
-            "finger": 3,
+            "finger": 1,
             "pos": 1,
             "playedString": "d",
-            "length": "eigth"
+            "length": "eigth",
+            "isDown": false
         },
         {
             "note": "e",
-            "finger": 3,
+            "finger": 1,
             "pos": 1,
             "playedString": "d",
-            "length": "eigth"
+            "length": "eigth",
+            "isDown": true
+        },
+        {
+            "note": "e",
+            "finger": 1,
+            "pos": 1,
+            "playedString": "d",
+            "length": "eigth",
+            "isDown": false
         },
         {
             "note": "f#",
-            "finger": 3,
+            "finger": 2,
             "pos": 1,
             "playedString": "d",
-            "length": "quarter"
+            "length": "quarter",
+            "isDown": true
         },
         {
             "note": "e",
-            "finger": 3,
+            "finger": 1,
             "pos": 1,
             "playedString": "d",
-            "length": "quarter"
+            "length": "quarter",
+            "isDown": false
         },
         {
             "note": "d",
-            "finger": 3,
+            "finger": 0,
             "pos": 1,
             "playedString": "d",
-            "length": "quarter"
+            "length": "quarter",
+            "isDown": true
         },
-                {
+        {
             "note": "rest",
-            "finger": 3,
+            "finger": 0,
             "pos": 1,
             "playedString": "d",
             "length": "quarter"
