@@ -25,7 +25,9 @@ class NoteScreen : Screen
     private Texture2D _DownSymbol;
     private Texture2D _UpSymbol;
     private readonly Action _toPauseMenu;
-    private const int NoteSpeed = 100;
+    private const int NoteSpeed = 500;
+    public uint Score { get; set; }
+    private uint _expectedScore = 0; 
 
 
     public NoteScreen(Action pauseMenu)
@@ -153,9 +155,19 @@ class NoteScreen : Screen
         {
             foreach (Finger finger in _fingerList.ToList())
             {
-                if (Math.Abs(note.GetYCoord() - finger.GetYCoord()) <= finger.GetWidth() && finger.IsPressed)
+                float noteCenterX = note.GetCenterX();
+                float fingerCenterX = finger.GetCenterX();
+                float noteCenterY = note.GetCenterY();
+                float fingerCenterY = finger.GetCenterY();
+                float hitWidth = (note.GetWidth() + finger.GetWidth()) / 2f;
+                float hitHeight = (note.GetHeight() + finger.GetHeight()) / 2f;
+
+                if (finger.IsPressed && Math.Abs(noteCenterY - fingerCenterY) <= hitHeight && Math.Abs(noteCenterX - fingerCenterX) <= hitWidth)
                 {
-                    Console.WriteLine("collision of finger and note");
+                    Score++;
+                } if (Math.Abs(noteCenterY - fingerCenterY) <= hitHeight && Math.Abs(noteCenterX - fingerCenterX) <= hitWidth)
+                {
+                    _expectedScore++;
                 }
             }
         }
@@ -219,5 +231,10 @@ class NoteScreen : Screen
             int posX = Raylib.GetScreenWidth() - (int)_DownSymbol.Dimensions.X;
             Raylib.DrawTexture(_UpSymbol, posX, posY, Color.Blue);
         }
+
+        string score = $"Score: {Score}";
+        Raylib.DrawText(score, 0, 0, 20, Color.Black);
+
+
     }
 }

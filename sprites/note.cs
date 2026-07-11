@@ -35,4 +35,29 @@ public class Note
         return _rectangle.Y + return_y;
     }
 
+    public float GetXCoor()
+    {
+        return _rectangle.X;
+    }
+
+    public float GetCenterX()
+    {
+        return _rectangle.X + (_rectangle.Width / 2f);
+    }
+
+    public float GetCenterY()
+    {
+        return _rectangle.Y + (_rectangle.Height / 2f);
+    }
+
+    public float GetWidth()
+    {
+        return _rectangle.Width;
+    }
+
+    public float GetHeight()
+    {
+        return _rectangle.Height;
+    }
+
 }

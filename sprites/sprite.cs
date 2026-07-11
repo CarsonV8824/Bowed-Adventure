@@ -30,5 +30,10 @@ public abstract class Sprite
         return _posistion.Y + return_y;
     }
 
+    public float GetXCoor()
+    {
+        return _posistion.X;
+    }
+
 
 }

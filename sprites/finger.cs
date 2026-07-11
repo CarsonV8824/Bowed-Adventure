@@ -72,7 +72,22 @@ class Finger : Sprite
 
     public float GetWidth()
     {
-        return _texture.Width;
+        return _texture.Width * Scale;
+    }
+
+    public float GetHeight()
+    {
+        return _texture.Height * Scale;
+    }
+
+    public float GetCenterX()
+    {
+        return _posistion.X + (GetWidth() / 2f);
+    }
+
+    public float GetCenterY()
+    {
+        return _posistion.Y + (GetHeight() / 2f);
     }
 
 }
