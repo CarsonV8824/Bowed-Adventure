@@ -168,7 +168,7 @@ class NoteScreen : Screen
                 } if (Math.Abs(noteCenterY - fingerCenterY) <= hitHeight && Math.Abs(noteCenterX - fingerCenterX) <= hitWidth)
                 {
                     _expectedScore++;
-                }
+                } 
             }
         }
 
