@@ -1,6 +1,7 @@
 using Raylib_cs;
 using System.Text.Json;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 class NoteScreen : Screen
 {
@@ -21,7 +22,7 @@ class NoteScreen : Screen
     private List<Finger> _fingerList;
 
     private bool _SpawnNote;
-    private bool _isDown;
+    private bool? _isDown;
     private Texture2D _DownSymbol;
     private Texture2D _UpSymbol;
     private readonly Action _toPauseMenu;
@@ -61,6 +62,8 @@ class NoteScreen : Screen
         _jsonNotes = JsonSerializer.Deserialize<JsonNotes>(_json, JsonOptions) ?? throw new InvalidOperationException("Failed to load piece JSON.");
         _tempo = _jsonNotes.Piece.Tempo;
         _inverval = 60 / _tempo;
+        _spawnTimer = 0;
+        _lengthOfNote = 0;
         _noteIndex = 0;
         _noteList = new List<Note>();
         _SpawnNote = true;
@@ -70,7 +73,7 @@ class NoteScreen : Screen
     {
         int finger = Convert.ToInt32(_jsonNotes.Notes[_noteIndex].Finger);
         float xPos = (Raylib.GetScreenWidth() * (5 - finger) / 6f) - (noteTexture.Width / 2f);
-        Note note = new Note(noteTexture, xPos);
+        Note note = new Note(noteTexture, xPos, finger);
         _noteList.Add(note);
     }
 
@@ -81,6 +84,7 @@ class NoteScreen : Screen
         if (_SpawnNote)
         {
             string typeOfNote = _jsonNotes.Notes[_noteIndex].Length;
+            _isDown = Convert.ToBoolean(_jsonNotes.Notes[_noteIndex].IsDown);
 
 
             switch (typeOfNote.ToLower())
@@ -150,9 +154,31 @@ class NoteScreen : Screen
             finger.Update();
         }
 
+        bool anyFingerPressed = _fingerList.Any(finger => finger.IsPressed);
+        int countOfFingersPressed = _fingerList.Count(finger => finger.IsPressed);
+        
+
         // collision logic
         foreach (Note note in _noteList.ToList())
         {
+            if (note.Finger == 0)
+            {
+                if (!anyFingerPressed)
+                {
+                    float noteCenterY = note.GetCenterY();
+                    float pressLineY = 300f + (_fingerList[0].GetHeight() / 2f);
+                    float hitHeight = (note.GetHeight() + _fingerList[0].GetHeight()) / 2f;
+
+                    if (Math.Abs(noteCenterY - pressLineY) <= hitHeight)
+                    {
+                        Score++;
+                        _expectedScore++;
+                    }
+                }
+
+                continue;
+            }
+            
             foreach (Finger finger in _fingerList.ToList())
             {
                 float noteCenterX = note.GetCenterX();
@@ -161,28 +187,20 @@ class NoteScreen : Screen
                 float fingerCenterY = finger.GetCenterY();
                 float hitWidth = (note.GetWidth() + finger.GetWidth()) / 2f;
                 float hitHeight = (note.GetHeight() + finger.GetHeight()) / 2f;
+                    
 
-                if (finger.IsPressed && Math.Abs(noteCenterY - fingerCenterY) <= hitHeight && Math.Abs(noteCenterX - fingerCenterX) <= hitWidth)
+                if (finger.IsPressed && Math.Abs(noteCenterY - fingerCenterY) <= hitHeight && Math.Abs(noteCenterX - fingerCenterX) <= hitWidth && countOfFingersPressed == 1)
                 {
                     Score++;
-                } if (Math.Abs(noteCenterY - fingerCenterY) <= hitHeight && Math.Abs(noteCenterX - fingerCenterX) <= hitWidth)
+                }
+                else if (Math.Abs(noteCenterY - fingerCenterY) <= hitHeight && Math.Abs(noteCenterX - fingerCenterX) <= hitWidth && countOfFingersPressed == 1)
                 {
                     _expectedScore++;
-                } 
+                }
             }
         }
 
-        if (Raylib.IsKeyPressed(KeyboardKey.Up))
-        {
-            _isDown = false;
-            Console.WriteLine("works");
-        }
-        else if (Raylib.IsKeyPressed(KeyboardKey.Down))
-        {
-            Console.WriteLine("works");
-            _isDown = true;
-        }
-        else if (Raylib.IsKeyPressed(KeyboardKey.Escape))
+        if (Raylib.IsKeyPressed(KeyboardKey.Escape))
         {
             _toPauseMenu.Invoke();
         }
@@ -218,14 +236,14 @@ class NoteScreen : Screen
             finger.Draw();
         }
 
-        if (_isDown)
+        if (_isDown == true)
         {
             const int posY = 0;
             int posX = Raylib.GetScreenWidth() - (int)_DownSymbol.Dimensions.X;
             Raylib.DrawTexture(_DownSymbol, posX, posY, Color.Black);
 
         }
-        else
+        else if (_isDown == false)
         {
             const int posY = 0;
             int posX = Raylib.GetScreenWidth() - (int)_DownSymbol.Dimensions.X;

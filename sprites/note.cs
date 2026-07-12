@@ -5,10 +5,12 @@ using Raylib_cs;
 public class Note
 {
     private Rectangle _rectangle;
-    public Note(Rectangle texture, float xPos)
+    public int Finger {get;set;}
+    public Note(Rectangle texture, float xPos, int finger)
     {
         _rectangle = texture;
         _rectangle.X = xPos;
+        Finger = finger;
     }
 
     public void Draw()

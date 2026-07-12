@@ -11,6 +11,7 @@ enum WindowSelected
 class Program
 {
     private static WindowSelected _currentScreen;
+    private static NoteScreen? noteScreen;
     public static void Main(string[] args)
     {
         Raylib.InitWindow(800, 600, "Bowed Adventure");
@@ -18,8 +19,8 @@ class Program
         Raylib.SetExitKey(KeyboardKey.Null);
 
         _currentScreen = WindowSelected.MainMenu;
-        MainScreen mainScreen = new MainScreen(ToPlayWindow);
-        NoteScreen noteScreen = new NoteScreen(ToPauseWindow);
+        MainScreen mainScreen = new MainScreen(ToPlayWindowFromMenu);
+        noteScreen = new NoteScreen(ToPauseWindow);
         PauseScreen pauseScreen = new PauseScreen(ToMainWindow, ToPlayWindow);
         Screen shownScreen = mainScreen;
         while (!Raylib.WindowShouldClose())
@@ -52,6 +53,12 @@ class Program
     public static void ToPlayWindow()
     {
         _currentScreen = WindowSelected.PlayWindow;
+    }
+
+    public static void ToPlayWindowFromMenu()
+    {
+        _currentScreen = WindowSelected.PlayWindow;
+        noteScreen?.ChangePiece();
     }
 
     public static void ToMainWindow()
