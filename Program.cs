@@ -5,13 +5,15 @@ enum WindowSelected
     MainMenu,
     PlayWindow,
     MapWindow,
-    PauseMenu
+    PauseMenu,
+    ResultScreen
 }
 
 class Program
 {
     private static WindowSelected _currentScreen;
     private static NoteScreen? noteScreen;
+    private static ResultScreen? resultScreen;
     public static void Main(string[] args)
     {
         Raylib.InitWindow(800, 600, "Bowed Adventure");
@@ -20,8 +22,9 @@ class Program
 
         _currentScreen = WindowSelected.MainMenu;
         MainScreen mainScreen = new MainScreen(ToPlayWindowFromMenu);
-        noteScreen = new NoteScreen(ToPauseWindow);
+        noteScreen = new NoteScreen(ToPauseWindow, ToResultWindow);
         PauseScreen pauseScreen = new PauseScreen(ToMainWindow, ToPlayWindow);
+        resultScreen = new ResultScreen(ToMainWindow);
         Screen shownScreen = mainScreen;
         while (!Raylib.WindowShouldClose())
         {
@@ -36,6 +39,9 @@ class Program
                     break;
                 case WindowSelected.PauseMenu:
                     shownScreen = pauseScreen;
+                    break;
+                case WindowSelected.ResultScreen:
+                    shownScreen = resultScreen;
                     break;
             }
             shownScreen.Update(dt);
@@ -69,6 +75,16 @@ class Program
     public static void ToPauseWindow()
     {
         _currentScreen = WindowSelected.PauseMenu;
+    }
+
+    public static void ToResultWindow()
+    {
+        _currentScreen = WindowSelected.ResultScreen;
+        if (resultScreen != null && noteScreen != null) 
+        {
+            var result = ((float) noteScreen.Score / (float) noteScreen.ExpectedScore) * 100;
+            resultScreen.resultText.Text = $"Accuracy: {result}%";
+        }
     }
 
 

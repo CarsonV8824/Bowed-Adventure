@@ -6,6 +6,8 @@ public class Note
 {
     private Rectangle _rectangle;
     public int Finger {get;set;}
+    public bool Hit = false;
+    public bool Counted = false;
     public Note(Rectangle texture, float xPos, int finger)
     {
         _rectangle = texture;
@@ -29,6 +31,11 @@ public class Note
         Tuple<float, float> returnTuple = Tuple.Create(_rectangle.X, _rectangle.Y);
         return returnTuple;
 
+    }
+
+    public float GetTopOfRectY()
+    {
+        return _rectangle.Y;
     }
 
     public float GetYCoord()

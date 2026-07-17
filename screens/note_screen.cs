@@ -14,7 +14,7 @@ class NoteScreen : Screen
     private float _tempo;
     private float _inverval;
     private float _spawnTimer;
-    private int _noteIndex;
+    public int NoteIndex { get; set; }
     private float _lengthOfNote;
 
     private List<Note> _noteList;
@@ -26,18 +26,19 @@ class NoteScreen : Screen
     private Texture2D _DownSymbol;
     private Texture2D _UpSymbol;
     private readonly Action _toPauseMenu;
-    private const int NoteSpeed = 500;
-    public uint Score { get; set; }
-    private uint _expectedScore = 0; 
+    private const int NoteSpeed = 1000;
+    public int Score { get; set; }
+    public int ExpectedScore { get; set; } = 0;
+    private readonly Action _toResultWindow;
 
 
-    public NoteScreen(Action pauseMenu)
+    public NoteScreen(Action pauseMenu, Action resultScreen)
     {
         _json = File.ReadAllText("assets/pieces/hot_cross_buns.json");
         _jsonNotes = JsonSerializer.Deserialize<JsonNotes>(_json, JsonOptions) ?? throw new InvalidOperationException("Failed to load piece JSON.");
         _tempo = _jsonNotes.Piece.Tempo;
         _inverval = 60f / _tempo;
-        _noteIndex = 0;
+        NoteIndex = 0;
         _noteList = new List<Note>();
         _fingerList = new List<Finger>();
         InitFingers();
@@ -46,6 +47,7 @@ class NoteScreen : Screen
         _UpSymbol = Raylib.LoadTexture("assets/images/nene.png");
         _isDown = true;
         _toPauseMenu = pauseMenu;
+        _toResultWindow = resultScreen;
     }
 
     private void InitFingers()
@@ -64,14 +66,16 @@ class NoteScreen : Screen
         _inverval = 60 / _tempo;
         _spawnTimer = 0;
         _lengthOfNote = 0;
-        _noteIndex = 0;
+        NoteIndex = 0;
         _noteList = new List<Note>();
         _SpawnNote = true;
+        Score = 0;
+        ExpectedScore = 0;
     }
 
     private void AddNote(Rectangle noteTexture)
     {
-        int finger = Convert.ToInt32(_jsonNotes.Notes[_noteIndex].Finger);
+        int finger = Convert.ToInt32(_jsonNotes.Notes[NoteIndex].Finger);
         float xPos = (Raylib.GetScreenWidth() * (5 - finger) / 6f) - (noteTexture.Width / 2f);
         Note note = new Note(noteTexture, xPos, finger);
         _noteList.Add(note);
@@ -83,8 +87,8 @@ class NoteScreen : Screen
         float size = _inverval * NoteSpeed;
         if (_SpawnNote)
         {
-            string typeOfNote = _jsonNotes.Notes[_noteIndex].Length;
-            _isDown = Convert.ToBoolean(_jsonNotes.Notes[_noteIndex].IsDown);
+            string typeOfNote = _jsonNotes.Notes[NoteIndex].Length;
+            _isDown = Convert.ToBoolean(_jsonNotes.Notes[NoteIndex].IsDown);
 
 
             switch (typeOfNote.ToLower())
@@ -107,7 +111,7 @@ class NoteScreen : Screen
 
         if (_SpawnNote)
         {
-            if (_jsonNotes.Notes[_noteIndex].Note != "rest")
+            if (_jsonNotes.Notes[NoteIndex].Note != "rest")
             {
                 // Keep all notes aligned by their leading edge so mixed lengths do not shift early/late.
                 float spawnTopY = spawnBaselineY - size;
@@ -120,10 +124,11 @@ class NoteScreen : Screen
         if (_spawnTimer >= _lengthOfNote && _lengthOfNote != 0)
         {
             float completedNoteLength = _lengthOfNote;
-            _noteIndex++;
-            if (_noteIndex >= _jsonNotes.Notes.Count)
+            NoteIndex++;
+            if (NoteIndex >= _jsonNotes.Notes.Count)
             {
                 _SpawnNote = false;
+                _toResultWindow.Invoke();
             }
             else
             {
@@ -156,46 +161,69 @@ class NoteScreen : Screen
 
         bool anyFingerPressed = _fingerList.Any(finger => finger.IsPressed);
         int countOfFingersPressed = _fingerList.Count(finger => finger.IsPressed);
-        
+
 
         // collision logic
         foreach (Note note in _noteList.ToList())
         {
             if (note.Finger == 0)
             {
+                float noteCenterY = note.GetCenterY();
+                float pressLineY = 300f + (_fingerList[0].GetHeight() / 2f);
+                float hitHeight = (note.GetHeight() + _fingerList[0].GetHeight()) / 2f;
                 if (!anyFingerPressed)
                 {
-                    float noteCenterY = note.GetCenterY();
-                    float pressLineY = 300f + (_fingerList[0].GetHeight() / 2f);
-                    float hitHeight = (note.GetHeight() + _fingerList[0].GetHeight()) / 2f;
-
-                    if (Math.Abs(noteCenterY - pressLineY) <= hitHeight)
+                    if (Math.Abs(noteCenterY - pressLineY) <= hitHeight && !note.Hit)
                     {
+                        note.Hit = true;
                         Score++;
-                        _expectedScore++;
                     }
+                }
+                if (Math.Abs(noteCenterY - pressLineY) <= hitHeight && !note.Counted)
+                {
+                    note.Counted = true;
+                    ExpectedScore++;
+                    Console.WriteLine(ExpectedScore);
                 }
 
                 continue;
             }
-            
+
             foreach (Finger finger in _fingerList.ToList())
             {
+
+                // In update loop
                 float noteCenterX = note.GetCenterX();
                 float fingerCenterX = finger.GetCenterX();
                 float noteCenterY = note.GetCenterY();
                 float fingerCenterY = finger.GetCenterY();
+
                 float hitWidth = (note.GetWidth() + finger.GetWidth()) / 2f;
                 float hitHeight = (note.GetHeight() + finger.GetHeight()) / 2f;
-                    
 
-                if (finger.IsPressed && Math.Abs(noteCenterY - fingerCenterY) <= hitHeight && Math.Abs(noteCenterX - fingerCenterX) <= hitWidth && countOfFingersPressed == 1)
+                bool overlaps =
+                    Math.Abs(noteCenterY - fingerCenterY) <= hitHeight &&
+                    Math.Abs(noteCenterX - fingerCenterX) <= hitWidth;
+
+                // Give score only once
+                if (!note.Hit &&
+                    finger.IsPressed &&
+                    overlaps &&
+                    countOfFingersPressed == 1 &&
+                    note.Finger != 0)
                 {
                     Score++;
+                    note.Hit = true;
                 }
-                else if (Math.Abs(noteCenterY - fingerCenterY) <= hitHeight && Math.Abs(noteCenterX - fingerCenterX) <= hitWidth && countOfFingersPressed == 1)
+
+                // Count expected score only once
+                if (!note.Counted &&
+                    noteCenterY >= Raylib.GetScreenHeight() - note.GetHeight() / 2f &&
+                    note.Finger != 0)
                 {
-                    _expectedScore++;
+                    ExpectedScore++;
+                    note.Counted = true;
+                    Console.WriteLine(ExpectedScore);
                 }
             }
         }
