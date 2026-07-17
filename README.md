@@ -4,7 +4,7 @@ A Gutiar Hero based game based for the violin or viola
 
 ## About the Game
 
-The game was supposed to be an arcade version of Gutiar Hero where users will play and get a random piece to play. The pieces I have choosen are not insanly hard which adds to that arcade feel. This random selection will intensive players to come back.
+The game was supposed to be an arcade version of Gutiar Hero where users will play and get a random piece to play. The pieces I have choosen are not insanly hard which adds to that arcade feel so anyone can pick up the game and feel good. This random selection will intensive players to come back.
 
 ### controls
 

@@ -1,7 +1,7 @@
 using Raylib_cs;
 using System.Text.Json;
 using System.Numerics;
-using System.Runtime.CompilerServices;
+using System.IO;
 
 class NoteScreen : Screen
 {
@@ -34,7 +34,12 @@ class NoteScreen : Screen
 
     public NoteScreen(Action pauseMenu, Action resultScreen)
     {
-        _json = File.ReadAllText("assets/pieces/hot_cross_buns.json");
+        
+        string[] files = Directory.GetFiles("assets/pieces");
+        int randomIndex = Random.Shared.Next(0, files.Length);
+        var choosenFilePath = files[randomIndex];
+
+        _json = File.ReadAllText(choosenFilePath);
         _jsonNotes = JsonSerializer.Deserialize<JsonNotes>(_json, JsonOptions) ?? throw new InvalidOperationException("Failed to load piece JSON.");
         _tempo = _jsonNotes.Piece.Tempo;
         _inverval = 60f / _tempo;
