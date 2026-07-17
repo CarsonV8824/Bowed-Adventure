@@ -106,6 +106,14 @@ class NoteScreen : Screen
                     _lengthOfNote = _inverval / 2;
                     size /= 2;
                     break;
+                case "sixteenth":
+                    _lengthOfNote = _inverval / 4;
+                    size /= 4;
+                    break;
+                case "half":
+                    _lengthOfNote = _inverval * 2;
+                    size *= 2;
+                    break;
                 default:
                     throw new Exception("JSON length of note could not be found in case in note_screen.cs in Update");
             }
